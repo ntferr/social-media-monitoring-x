@@ -1,8 +1,0 @@
-APP__HOST = 127.0.0.1
-APP__PORT = 8000
-APP__NAME = Social Media Monitoring X
-
-MONGO__USER = root
-MONGO__PASSWORD = example
-MONGO__HOST = localhost
-MONGO__PORT = 27017
