@@ -14,8 +14,11 @@ func NewServer(envs *env.Enviroments) (*mongo.Client, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return mongo.Connect(
-		options.Client().ApplyURI(uri),
+		options.Client().
+			ApplyURI(uri).
+			SetServerAPIOptions(options.ServerAPI(options.ServerAPIVersion1)),
 	)
 }
 
@@ -40,7 +43,7 @@ func buildMongoURI(user, password, host, port string) (string, error) {
 	uri.WriteString(host)
 	uri.WriteString(":")
 	uri.WriteString(port)
-	uri.WriteString("/?authSource=admin")
+	// uri.WriteString("/?authSource=admin")
 
 	return uri.String(), nil
 }
