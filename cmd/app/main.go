@@ -7,7 +7,6 @@ import (
 	"os/signal"
 
 	"github.com/social-media-monitoring-x/internal/config"
-	"github.com/social-media-monitoring-x/internal/container"
 	"github.com/social-media-monitoring-x/pkg/fiber"
 	"github.com/social-media-monitoring-x/pkg/mongo"
 	"go.uber.org/dig"
@@ -16,7 +15,7 @@ import (
 var shutdownChan = make(chan struct{})
 
 func main() {
-	appContainer := container.NewContainer()
+	appContainer := dig.New()
 	registerConfig(appContainer)
 	app := fiber.Unwrap(appContainer)
 	app.Get("/test", fiber.Test)
