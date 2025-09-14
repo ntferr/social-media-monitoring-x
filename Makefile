@@ -1,5 +1,5 @@
 dependecies:
 	docker-compose -f infra/compose.yaml up -d
 
-build-app:
+build-app: dependecies
 	go build cmd/main.go

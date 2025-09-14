@@ -7,6 +7,7 @@ require github.com/caarlos0/env v3.5.0+incompatible
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/caarlos0/env/v11 v11.3.1 // indirect
+	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/gofiber/fiber/v2 v2.52.9 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect

@@ -4,13 +4,13 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/social-media-monitoring-x/internal/env"
+	"github.com/social-media-monitoring-x/internal/config"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-func NewServer(envs *env.Enviroments) (*mongo.Client, error) {
-	uri, err := buildMongoURI(envs.Mongo.User, envs.Mongo.Password, envs.Mongo.Host, envs.Mongo.Port)
+func NewServer(cfg *config.MongoConfig) (*mongo.Client, error) {
+	uri, err := buildMongoURI(cfg)
 	if err != nil {
 		return nil, err
 	}
@@ -22,13 +22,13 @@ func NewServer(envs *env.Enviroments) (*mongo.Client, error) {
 	)
 }
 
-func buildMongoURI(user, password, host, port string) (string, error) {
-	if host == "" || port == "" {
+func buildMongoURI(cfg *config.MongoConfig) (string, error) {
+	if cfg.Host == "" || cfg.Port == "" {
 		return "", NewErrorMongo(nil, "host and port are required")
 	}
 
-	encodedUser := url.QueryEscape(user)
-	encodedPassword := url.QueryEscape(password)
+	encodedUser := url.QueryEscape(cfg.User)
+	encodedPassword := url.QueryEscape(cfg.Password)
 
 	uri := strings.Builder{}
 	if encodedUser == "" || encodedPassword == "" {
@@ -40,9 +40,9 @@ func buildMongoURI(user, password, host, port string) (string, error) {
 	uri.WriteString(":")
 	uri.WriteString(encodedPassword)
 	uri.WriteString("@")
-	uri.WriteString(host)
+	uri.WriteString(cfg.Host)
 	uri.WriteString(":")
-	uri.WriteString(port)
+	uri.WriteString(cfg.Port)
 	// uri.WriteString("/?authSource=admin")
 
 	return uri.String(), nil

@@ -6,23 +6,23 @@ import (
 	"context"
 	"testing"
 
-	"github.com/social-media-monitoring-x/internal/env"
+	"github.com/social-media-monitoring-x/internal/config"
 )
 
-var envs env.Enviroments
+var cfg config.MongoConfig
 
 func TestMain(m *testing.M) {
-	envs.Mongo.Host = "localhost"
-	envs.Mongo.Port = "27017"
-	envs.Mongo.Password = "example"
-	envs.Mongo.User = "root"
+	cfg.Host = "localhost"
+	cfg.Port = "27017"
+	cfg.Password = "example"
+	cfg.User = "root"
 }
 
 func TestMongoConnection(t *testing.T) {
 	t.Parallel()
 	t.Run("should connect to mongo, when mongo server is ok", func(t *testing.T) {
 		t.Parallel()
-		client, err := NewServer(&envs)
+		client, err := NewServer(&cfg)
 		ctx := context.Background()
 		if err != nil {
 			t.Fatalf("failed to connect to mongo: %v", err)
@@ -37,10 +37,10 @@ func TestMongoConnection(t *testing.T) {
 		}
 	})
 	t.Run("should return an error, when mongo server is not ok", func(t *testing.T) {
-		auxEnv := envs
-		auxEnv.Mongo.Host = "test"
+		auxCfg := cfg
+		auxCfg.Host = "test"
 		t.Parallel()
-		client, err := NewServer(&auxEnv)
+		client, err := NewServer(&auxCfg)
 		ctx := context.Background()
 		if err != nil {
 			t.Fatalf("failed to connect to mongo: %v", err)
