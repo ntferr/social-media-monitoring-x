@@ -40,7 +40,3 @@ func Unwrap(d *dig.Container) *fiber.App {
 	})
 	return result
 }
-
-func Test(c *fiber.Ctx) error {
-	return c.SendString("Healthy")
-}

@@ -20,3 +20,25 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
       ME_CONFIG_BASICAUTH: false
+  
+  splunk-local:
+    container_name: splunk-local
+    image: splunk/splunk:10.0
+    restart: on-failure
+    environment:
+      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_ENABLE_LISTEN: 9997
+      SPLUNK_ADD: tcp 1514
+      SPLUNK_USER: root
+      SPLUNK_PASSWORD: 123456
+    volumes:
+      - opt-splunk-etc:/opt/splunk/etc
+      - opt-splunk-var:/opt/splunk/var
+    ports:
+      - "8088:8088"
+      - "9997:9997"
+      - "8000:8000"
+      - "1514:1514"
+    volumes:
+      opt-splunk-etc:
+      opt-splunk-var:

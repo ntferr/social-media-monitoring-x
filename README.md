@@ -11,3 +11,4 @@ An application to monitor threads into X social media.
 - AWS
 - Mongo
 - Kafka
+- Uber/dig - for depedency injection
