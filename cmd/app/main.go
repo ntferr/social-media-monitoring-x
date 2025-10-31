@@ -22,7 +22,6 @@ func main() {
 	if err := container.Invoke(initApp); err != nil {
 		log.Fatalf("failed to invoke setup router")
 	}
-	shutdowngracefully()
 	<-shutdownChan
 }
 
@@ -48,20 +47,23 @@ func registerConfig(container *dig.Container) {
 	}
 }
 
+// initApp init router and call fiber listen.
 func initApp(app *fiber.App, cfg *config.AppConfig) {
 	router.NewRouter(app).SetupRouter()
 	addr := fmt.Sprintf(":%s", cfg.Port)
 	if err := app.Listen(addr); err != nil {
-		log.Fatalf("failed to start server: %v", err)
+		log.Fatalf("application had an error: %v", err)
+		shutdowngracefully(app)
 	}
 }
 
 // shutdowngracefully shutdown app gracefully.
-func shutdowngracefully() {
+func shutdowngracefully(app *fiber.App) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	go func() {
 		<-c
+		app.Shutdown()
 		fmt.Println("shutting down application gracefully")
 		shutdownChan <- struct{}{}
 	}()
